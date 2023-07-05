@@ -25,6 +25,29 @@ const selectGameMode = new Promise((resolve) => {
   });
 });
 
+// Cuenta regresiva inicial de la partida
+function initialTimer() {
+  // Coloca el temporizador inicial en pantalla
+  let timer = 3;
+  const timerDiv = document.createElement('DIV');
+  const timerNumber = document.createElement('h2');
+  timerDiv.id = 'timer';
+  timerNumber.id = 'timer-number';
+  timerNumber.textContent = `${timer}`;
+  timerDiv.appendChild(timerNumber);
+  document.body.appendChild(timerDiv);
+
+  // Ejecuta la cuenta regresiva y elimina la alerta
+  const initialTimerInterval = setInterval(() => {
+    timerNumber.textContent = `${timer}`;
+    timer--;
+    if (timer === -1) {
+      timerDiv.style.opacity = '0';
+      clearInterval(initialTimerInterval);
+    }
+  }, 900);
+}
+
 selectGameMode.then((gameMode) => console.log(gameMode));
 let i = 0;
 boardBoxes.forEach((box) => {
@@ -42,3 +65,4 @@ currentCard.appendChild(imgCurrentCard);
 selectGameMode.then((gameMode) => console.log(gameMode));
 
 progressBar.style.width = '0%';
+initialTimer();
