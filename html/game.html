@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/loteria.js" type="module"></script>
+    <script src="/js/app.js" type="module"></script>
+    <title>Loteria</title>
+  </head>
+  <body>
+    <main>
+      <div id="mode">
+        <div id="mode-display">
+          <h3>MODO DE JUEGO</h3>
+        </div>
+      </div>
+      <div id="oponents">
+        <div id="oponents-display">
+          <h3>OPONENTES</h3>
+          <div id="oponents-layout">
+            <div class="oponent-board">
+              <div class="oponent-board-box row-1 column-1"></div>
+              <div class="oponent-board-box row-1 column-2"></div>
+              <div class="oponent-board-box row-1 column-3"></div>
+              <div class="oponent-board-box row-1 column-4"></div>
+              <div class="oponent-board-box row-2 column-1"></div>
+              <div class="oponent-board-box row-2 column-2"></div>
+              <div class="oponent-board-box row-2 column-3"></div>
+              <div class="oponent-board-box row-2 column-4"></div>
+              <div class="oponent-board-box row-3 column-1"></div>
+              <div class="oponent-board-box row-3 column-2"></div>
+              <div class="oponent-board-box row-3 column-3"></div>
+              <div class="oponent-board-box row-3 column-4"></div>
+              <div class="oponent-board-box row-4 column-1"></div>
+              <div class="oponent-board-box row-4 column-2"></div>
+              <div class="oponent-board-box row-4 column-3"></div>
+              <div class="oponent-board-box row-4 column-4"></div>
+            </div>
+            <div class="oponent-board">
+              <div class="oponent-board-box row-1 column-1"></div>
+              <div class="oponent-board-box row-1 column-2"></div>
+              <div class="oponent-board-box row-1 column-3"></div>
+              <div class="oponent-board-box row-1 column-4"></div>
+              <div class="oponent-board-box row-2 column-1"></div>
+              <div class="oponent-board-box row-2 column-2"></div>
+              <div class="oponent-board-box row-2 column-3"></div>
+              <div class="oponent-board-box row-2 column-4"></div>
+              <div class="oponent-board-box row-3 column-1"></div>
+              <div class="oponent-board-box row-3 column-2"></div>
+              <div class="oponent-board-box row-3 column-3"></div>
+              <div class="oponent-board-box row-3 column-4"></div>
+              <div class="oponent-board-box row-4 column-1"></div>
+              <div class="oponent-board-box row-4 column-2"></div>
+              <div class="oponent-board-box row-4 column-3"></div>
+              <div class="oponent-board-box row-4 column-4"></div>
+            </div>
+            <div class="oponent-board">
+              <div class="oponent-board-box row-1 column-1"></div>
+              <div class="oponent-board-box row-1 column-2"></div>
+              <div class="oponent-board-box row-1 column-3"></div>
+              <div class="oponent-board-box row-1 column-4"></div>
+              <div class="oponent-board-box row-2 column-1"></div>
+              <div class="oponent-board-box row-2 column-2"></div>
+              <div class="oponent-board-box row-2 column-3"></div>
+              <div class="oponent-board-box row-2 column-4"></div>
+              <div class="oponent-board-box row-3 column-1"></div>
+              <div class="oponent-board-box row-3 column-2"></div>
+              <div class="oponent-board-box row-3 column-3"></div>
+              <div class="oponent-board-box row-3 column-4"></div>
+              <div class="oponent-board-box row-4 column-1"></div>
+              <div class="oponent-board-box row-4 column-2"></div>
+              <div class="oponent-board-box row-4 column-3"></div>
+              <div class="oponent-board-box row-4 column-4"></div>
+            </div>
+            <div class="oponent-board">
+              <div class="oponent-board-box row-1 column-1"></div>
+              <div class="oponent-board-box row-1 column-2"></div>
+              <div class="oponent-board-box row-1 column-3"></div>
+              <div class="oponent-board-box row-1 column-4"></div>
+              <div class="oponent-board-box row-2 column-1"></div>
+              <div class="oponent-board-box row-2 column-2"></div>
+              <div class="oponent-board-box row-2 column-3"></div>
+              <div class="oponent-board-box row-2 column-4"></div>
+              <div class="oponent-board-box row-3 column-1"></div>
+              <div class="oponent-board-box row-3 column-2"></div>
+              <div class="oponent-board-box row-3 column-3"></div>
+              <div class="oponent-board-box row-3 column-4"></div>
+              <div class="oponent-board-box row-4 column-1"></div>
+              <div class="oponent-board-box row-4 column-2"></div>
+              <div class="oponent-board-box row-4 column-3"></div>
+              <div class="oponent-board-box row-4 column-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="board">
+        <div class="board-box row-1 column-1"></div>
+        <div class="board-box row-1 column-2"></div>
+        <div class="board-box row-1 column-3"></div>
+        <div class="board-box row-1 column-4"></div>
+        <div class="board-box row-2 column-1"></div>
+        <div class="board-box row-2 column-2"></div>
+        <div class="board-box row-2 column-3"></div>
+        <div class="board-box row-2 column-4"></div>
+        <div class="board-box row-3 column-1"></div>
+        <div class="board-box row-3 column-2"></div>
+        <div class="board-box row-3 column-3"></div>
+        <div class="board-box row-3 column-4"></div>
+        <div class="board-box row-4 column-1"></div>
+        <div class="board-box row-4 column-2"></div>
+        <div class="board-box row-4 column-3"></div>
+        <div class="board-box row-4 column-4"></div>
+      </div>
+      <div id="current-card">
+        <div id="current-card-display-div">
+          <div id="current-card-display"></div>
+          <div id="loading-bar">
+            <div id="progress-bar"></div>
+          </div>
+        </div>
+        <header>
+          <h2>L</h2>
+          <h2>O</h2>
+          <h2>T</h2>
+          <h2>E</h2>
+          <h2>R</h2>
+          <h2>I</h2>
+          <h2>A</h2>
+        </header>
+      </div>
+    </main>
+  </body>
+</html>
