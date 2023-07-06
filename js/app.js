@@ -160,7 +160,7 @@ function shuffleCards() {
   }
 }
 
-function showCards(modeDisplayHTML) {
+function showCards() {
   // Muestra el tablero del jugador humano
   let i = 0;
   boardBoxes.forEach((box) => {
@@ -233,8 +233,31 @@ function showMode(mode) {
   modeDisplay.innerHTML += HTML;
 }
 
+function winnerRowColumnCorners(gameMode) {
+  let mode;
+  switch (gameMode) {
+    case 'mode-1':
+      mode = 'row';
+      break;
+    case 'mode-1':
+      mode = 'column';
+      break;
+    case 'mode-1':
+      mode = 'corner';
+      break;
+    default:
+      break;
+  }
+
+  let i = 1;
+  let boxesSet;
+  for (let i = 0; i < 4; i++) {
+    boxesSet = Array.from(document.querySelectorAll(`${mode}-${i}`));
+  }
+}
+
+// Inicia el juego
 function startGame() {
-  let modeDisplayHTML;
   selectGameMode.then((mode) => {
     sessionStorage.setItem('gameMode', mode);
   });
