@@ -175,51 +175,74 @@ function showCards(modeDisplayHTML) {
   imgCurrentCard.src = mainDeck[0].img;
   imgCurrentCard.alt = mainDeck[0].nombre;
   currentCard.appendChild(imgCurrentCard);
-
-  const modeDisplay = document.querySelector('#mode-display');
-  modeDisplay.innerHTML += modeDisplayHTML;
 }
 
 function showMode(mode) {
   // Muestra el modo de juego
   const gMode = mode.slice(0, 6);
-  let HTML;
-  console.log(gMode);
+  const modeDisplay = document.querySelector('#mode-display');
+  let id;
+  let nomImg;
+  let altImg;
+  let gameModeTitle;
   switch (gMode) {
     case 'mode-1':
-      HTML = `
-      <img
-          class="game-mode-icon"
-          id="mode-1-icon"
-          src="/img/icons/Loteria-Columna.png"
-          alt="row-icon"
-        />
-      `;
+      id = 1;
+      nomImg = 'Loteria-Columna';
+      altImg = 'row-icon';
+      gameModeTitle = 'FILAS';
       break;
     case 'mode-2':
+      id = 2;
+      nomImg = 'Loteria-Columna';
+      altImg = 'column-icon';
+      gameModeTitle = 'COLUMNAS';
       break;
     case 'mode-3':
+      id = 3;
+      nomImg = 'Loteria-Esquinas';
+      altImg = 'corners-icon';
+      gameModeTitle = 'ESQUINAS';
       break;
     case 'mode-4':
+      id = 4;
+      nomImg = 'Loteria-AdentoAfuera';
+      altImg = 'inside-icon';
+      gameModeTitle = 'ADENTRO O AFUERA';
       break;
     case 'mode-5':
+      id = 5;
+      nomImg = 'Loteria-Todo';
+      altImg = 'all-icon';
+      gameModeTitle = 'TODO';
+
       break;
     default:
       break;
   }
-  return HTML;
+
+  const HTML = `
+  <img
+      class="game-mode-icon"
+      id="mode-${id}-icon"
+      src="/img/icons/${nomImg}.png"
+      alt="${altImg}"
+  />
+  <h3 class="game-mode-title" id="game-mode-${id}-title">${gameModeTitle}<h3>
+  `;
+  modeDisplay.innerHTML += HTML;
 }
 
 function startGame() {
   let modeDisplayHTML;
   selectGameMode.then((mode) => {
-    modeDisplayHTML = showMode(mode);
-    console.log(modeDisplayHTML);
-    // console.log(mode);
+    sessionStorage.setItem('gameMode', mode);
   });
-
-  // shuffleCards();
-  // showCards(modeDisplayHTML);
+  gameMode = sessionStorage.getItem('gameMode');
+  console.log(gameMode);
+  showMode(gameMode);
+  shuffleCards();
+  showCards();
 }
 
 // progressBar.style.width = '0%';

@@ -77,6 +77,14 @@ h3 {
   margin-top: 2rem;
 }
 
+#game-mode-2-title {
+  font-size: 5rem;
+}
+
+#game-mode-4-title {
+  font-size: 3.5rem;
+}
+
 #oponents {
   grid-row: 2/3;
 }
