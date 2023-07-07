@@ -153,7 +153,13 @@ header {
   margin: auto;
 }
 
-.board-box img {
+.board-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-box {
   width: 17rem;
   height: 22rem;
   border-radius: 1rem;
@@ -205,13 +211,18 @@ h2 {
   font-size: 10rem;
 }
 
-#timer {
+#alert,
+.bean,
+.block-alert {
+  position: fixed;
+  z-index: 9999;
+}
+
+#alert {
   width: 50rem;
   height: 30rem;
   background-color: #e64328;
   border-radius: 4rem;
-  position: fixed;
-  z-index: 9999;
   opacity: 1;
   transition: opacity 0.5s ease;
 }
@@ -222,4 +233,22 @@ h2 {
   width: fit-content;
   height: fit-content;
   margin: 6rem auto;
+}
+
+.bean {
+  width: 10rem;
+  height: 10rem;
+}
+
+.block-alert {
+  background-color: #e64328;
+  border-radius: 0.5rem;
+  padding: 0.3rem;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.block-alert h4 {
+  font-size: 1.5rem;
+  color: #fbed1a;
 }

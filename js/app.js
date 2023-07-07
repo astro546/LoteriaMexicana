@@ -35,7 +35,7 @@ function initialTimer() {
   let timer = 3;
   const timerDiv = document.createElement('DIV');
   const timerNumber = document.createElement('h2');
-  timerDiv.id = 'timer';
+  timerDiv.id = 'alert';
   timerNumber.id = 'timer-number';
   timerNumber.textContent = `${timer}`;
   timerDiv.appendChild(timerNumber);
@@ -47,6 +47,9 @@ function initialTimer() {
     timer--;
     if (timer === -1) {
       timerDiv.style.opacity = '0';
+      setTimeout(() => {
+        timerDiv.remove();
+      }, 100);
       clearInterval(initialTimerInterval);
     }
   }, 900);
@@ -167,6 +170,7 @@ function showCards() {
     const imgCard = document.createElement('IMG');
     imgCard.src = playerBoards[0][i].img;
     imgCard.alt = playerBoards[0][i].nombre;
+    imgCard.classList.add('img-box');
     box.appendChild(imgCard);
     i++;
   });
@@ -177,6 +181,7 @@ function showCards() {
   currentCard.appendChild(imgCurrentCard);
 }
 
+// Muestra el modo de juego
 function showMode(mode) {
   // Muestra el modo de juego
   const gMode = mode.slice(0, 6);
@@ -233,16 +238,57 @@ function showMode(mode) {
   modeDisplay.innerHTML += HTML;
 }
 
+// Funcion para poner un frijol en el tablero
+function setBeanHuman(e) {
+  const box = e.target;
+  const currentCardImg = currentCard.querySelector('img');
+
+  if (box.alt === currentCardImg.alt) {
+    const bean = document.createElement('IMG');
+    bean.src = '/img/icons/Bean.png';
+    bean.alt = 'Bean';
+    bean.classList.add('bean');
+    box.parentNode.classList.add('marked');
+    box.insertAdjacentElement('afterend', bean);
+  } else {
+    const alert = document.createElement('div');
+    alert.classList.add('block-alert');
+    alert.innerHTML = '<h4>CASILLA INCORRECTA</h4>';
+    box.insertAdjacentElement('afterend', alert);
+    setTimeout(() => {
+      alert.style.opacity = '0';
+      setTimeout(() => {
+        alert.remove();
+      }, 100);
+    }, 300);
+  }
+}
+
+// Funcion de los jugadores controlados por la PC
+function setBeanPC(boardPC, playerID) {
+  const currentCardImg = currentCard.querySelector('img');
+  const boardPCBoxes = document
+    .querySelector(`#playerPC${playerID}`)
+    .querySelectorAll('.oponent-board-box');
+
+  for (let i = 0; i < 16; i++) {
+    if (boardPC[i].nombre === currentCardImg.alt) {
+      boardPCBoxes.item(i).style.backgroundColor = '#e64328';
+      boardPCBoxes.item(i).classList.add('marked');
+    }
+  }
+}
+
 function winnerRowColumnCorners(gameMode) {
   let mode;
   switch (gameMode) {
     case 'mode-1':
       mode = 'row';
       break;
-    case 'mode-1':
+    case 'mode-2':
       mode = 'column';
       break;
-    case 'mode-1':
+    case 'mode-3':
       mode = 'corner';
       break;
     default:
@@ -262,10 +308,18 @@ function startGame() {
     sessionStorage.setItem('gameMode', mode);
   });
   gameMode = sessionStorage.getItem('gameMode');
-  console.log(gameMode);
+
   showMode(gameMode);
   shuffleCards();
   showCards();
+
+  for (let i = 1; i < 5; i++) {
+    setBeanPC(playerBoards[i], i);
+  }
+
+  boardBoxes.forEach((boardBox) => {
+    boardBox.addEventListener('click', setBeanHuman);
+  });
 }
 
 // progressBar.style.width = '0%';
