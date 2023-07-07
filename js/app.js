@@ -13,6 +13,8 @@ const imgCurrentCard = document.createElement('IMG');
 // Variables de la logica del juego
 const mainDeck = [...cartas];
 const playerBoards = [];
+let winnerFunc;
+let modeSet;
 
 // Cuando se selecciona un modo, este se guarda en gameMode antes de que se cambie de pagina
 const selectGameMode = new Promise((resolve) => {
@@ -21,6 +23,7 @@ const selectGameMode = new Promise((resolve) => {
       modes.forEach((mode) => {
         mode.addEventListener('click', (e) => {
           gameMode = e.target.id;
+          sessionStorage.setItem('gameMode', gameMode);
           resolve(gameMode);
           window.location.href = 'game.html';
         });
@@ -182,15 +185,14 @@ function showCards() {
 }
 
 // Muestra el modo de juego
-function showMode(mode) {
+function showMode() {
   // Muestra el modo de juego
-  const gMode = mode.slice(0, 6);
   const modeDisplay = document.querySelector('#mode-display');
   let id;
   let nomImg;
   let altImg;
   let gameModeTitle;
-  switch (gMode) {
+  switch (gameMode) {
     case 'mode-1':
       id = 1;
       nomImg = 'Loteria-Columna';
@@ -279,36 +281,100 @@ function setBeanPC(boardPC, playerID) {
   }
 }
 
-function winnerRowColumnCorners(gameMode) {
-  let mode;
+// Verifica al ganador de los modos filas, columnas y esquinas
+function winnerRowColumnCorners(boxes, gameMode) {
+  let boxesSet;
+  let winner;
+  for (let j = 1; j <= 3; j++) {
+    boxesSet = Array.from(boxes.querySelectorAll(`${gameMode}-${j}`));
+    winner = boxesSet.every((box) => box.classList.includes('marked'));
+    if (winner) {
+      return i;
+    }
+  }
+  return false;
+}
+
+// Verifica al ganador del modo adentro o afuera
+function winnerInsideOutside(boxes) {
+  let setBoxes;
+  let winner;
+  setBoxes = Array.from(boxes.querySelectorAll('inside'));
+  winner = setBoxes.every((box) => box.classList.includes('marked'));
+  if (winner) {
+    return i;
+  }
+
+  setBoxes = Array.from(boxes.querySelectorAll('outside'));
+  winner = setBoxes.every((box) => box.classList.includes('marked'));
+  if (winner) {
+    return i;
+  }
+  return false;
+}
+
+// Verifica el ganador del modo todas las casillas
+function winnerAll(boxes) {
+  let setBoxes;
+  let winner;
+  setBoxes = Array.from(boxes.childNodes);
+  winner = setBoxes.every((box) => box.classList.includes('marked'));
+  if (winner) {
+    return i;
+  }
+  return false;
+}
+
+// Asigna la funcion que verifica al ganador dependiendo del modo de juego
+function assignWinner() {
+  gameMode = gameMode.slice(0, 6);
   switch (gameMode) {
     case 'mode-1':
-      mode = 'row';
+      modeSet = 'row';
+      winnerFunc = winnerRowColumnCorners;
       break;
     case 'mode-2':
-      mode = 'column';
+      modeSet = 'column';
+      winnerFunc = winnerRowColumnCorners;
       break;
     case 'mode-3':
-      mode = 'corner';
+      modeSet = 'corner';
+      winnerFunc = winnerRowColumnCorners;
+      break;
+    case 'mode-4':
+      winnerFunc = winnerInsideOutside;
+      break;
+    case 'mode-5':
+      winnerFunc = winnerAll;
       break;
     default:
       break;
   }
+}
 
-  let i = 1;
-  let boxesSet;
-  for (let i = 0; i < 4; i++) {
-    boxesSet = Array.from(document.querySelectorAll(`${mode}-${i}`));
+// Verifica si hay un ganador
+function winner() {
+  let playerBoardBoxes;
+  let winner;
+  for (let i = 0; i < 5; i++) {
+    playerBoardBoxes = document.querySelector(`#playerPC${i}`);
+    winner = winnerFunc(playerBoardBoxes, modeSet);
+    if (winner) {
+      return winner;
+    }
   }
+  return false;
 }
 
 // Inicia el juego
 function startGame() {
   selectGameMode.then((mode) => {
-    sessionStorage.setItem('gameMode', mode);
+    // sessionStorage.setItem('gameMode', mode);
+    console.log(mode);
   });
   gameMode = sessionStorage.getItem('gameMode');
 
+  assignWinner(gameMode);
   showMode(gameMode);
   shuffleCards();
   showCards();
@@ -323,5 +389,7 @@ function startGame() {
 }
 
 // progressBar.style.width = '0%';
-initialTimer();
-startGame();
+if (document.querySelector('#game-layout')) {
+  initialTimer();
+  startGame();
+}
