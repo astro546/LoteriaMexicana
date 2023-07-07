@@ -282,45 +282,45 @@ function setBeanPC(boardPC, playerID) {
 }
 
 // Verifica al ganador de los modos filas, columnas y esquinas
-function winnerRowColumnCorners(boxes, gameMode) {
+function winnerRowColumnCorners(boxes, index, gameMode) {
   let boxesSet;
   let winner;
   for (let j = 1; j <= 3; j++) {
     boxesSet = Array.from(boxes.querySelectorAll(`${gameMode}-${j}`));
     winner = boxesSet.every((box) => box.classList.includes('marked'));
     if (winner) {
-      return i;
+      return index;
     }
   }
   return false;
 }
 
 // Verifica al ganador del modo adentro o afuera
-function winnerInsideOutside(boxes) {
+function winnerInsideOutside(boxes, index) {
   let setBoxes;
   let winner;
   setBoxes = Array.from(boxes.querySelectorAll('inside'));
   winner = setBoxes.every((box) => box.classList.includes('marked'));
   if (winner) {
-    return i;
+    return index;
   }
 
   setBoxes = Array.from(boxes.querySelectorAll('outside'));
   winner = setBoxes.every((box) => box.classList.includes('marked'));
   if (winner) {
-    return i;
+    return index;
   }
   return false;
 }
 
 // Verifica el ganador del modo todas las casillas
-function winnerAll(boxes) {
+function winnerAll(boxes, index) {
   let setBoxes;
   let winner;
   setBoxes = Array.from(boxes.childNodes);
   winner = setBoxes.every((box) => box.classList.includes('marked'));
   if (winner) {
-    return i;
+    return index;
   }
   return false;
 }
@@ -358,7 +358,7 @@ function winner() {
   let winner;
   for (let i = 0; i < 5; i++) {
     playerBoardBoxes = document.querySelector(`#playerPC${i}`);
-    winner = winnerFunc(playerBoardBoxes, modeSet);
+    winner = winnerFunc(playerBoardBoxes, i, modeSet);
     if (winner) {
       return winner;
     }
@@ -369,7 +369,6 @@ function winner() {
 // Inicia el juego
 function startGame() {
   selectGameMode.then((mode) => {
-    // sessionStorage.setItem('gameMode', mode);
     console.log(mode);
   });
   gameMode = sessionStorage.getItem('gameMode');
