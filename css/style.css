@@ -190,11 +190,28 @@ header {
   margin-top: 3rem;
 }
 
+/* Definicion de la animacion de la barra de progreso */
+@keyframes progress-animation {
+  0% {
+    width: 100%;
+  }
+
+  50% {
+    width: 50%;
+  }
+
+  100% {
+    width: 0%;
+  }
+}
+
 #progress-bar {
   height: 100%;
   width: 100%;
   background-color: #fcd188;
-  transition: width 3s ease;
+
+  /* Parametros de animation: nomKeyframes duracion iteration-count*/
+  /* animation: progress-animation 3s infinite; */
 }
 
 header {
@@ -211,14 +228,16 @@ h2 {
   font-size: 10rem;
 }
 
-#alert,
+#alert-timer,
+#alert-winner,
 .bean,
 .block-alert {
   position: fixed;
-  z-index: 9999;
+  z-index: 7000;
 }
 
-#alert {
+#alert-timer,
+#alert-winner {
   width: 50rem;
   height: 30rem;
   background-color: #e64328;
