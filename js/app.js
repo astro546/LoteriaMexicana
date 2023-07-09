@@ -466,11 +466,17 @@ function showWinner(winner) {
 // Bucle del juego
 async function play() {
   let mainDeckIndex = 0;
-  progressBar.style.animation = 'progress-animation 3000ms infinite';
+  progressBar.style.animation = 'progress-animation 3000ms';
   const boardHumanCardsImg = document.querySelectorAll('.img-box');
   boardHumanCardsImg.forEach((imgBox) => (imgBox.style.cursor = 'pointer'));
 
-  while (!gameOver && mainDeckIndex < 54) {
+  // La siguiente iteracion comienza cuando la animacion de la barra de progreso termine
+  function onAnimationEnd() {
+    progressBar.removeEventListener('animationend', onAnimationEnd);
+    nextIteration();
+  }
+
+  function nextIteration() {
     imgCurrentCard.src = mainDeck[mainDeckIndex].img;
     imgCurrentCard.alt = mainDeck[mainDeckIndex].nombre;
 
@@ -479,8 +485,19 @@ async function play() {
     }
 
     mainDeckIndex++;
-    await wait(3000);
+
+    if (!gameOver && mainDeckIndex < 54) {
+      // Reinicia la animacion de la barra de progreso
+      // Se hace essto para evitar un delay entre la animacion de la barra de progreso
+      // y el delay de las iteraciones del flujo del juego
+      progressBar.addEventListener('animationend', onAnimationEnd);
+      progressBar.style.animation = 'none';
+      void progressBar.offsetWidth; // Trigger reflow
+      progressBar.style.animation = 'progress-animation 3000ms';
+    }
   }
+
+  nextIteration();
 }
 
 // Inicia el juego
