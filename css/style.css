@@ -271,3 +271,30 @@ h2 {
   font-size: 1.5rem;
   color: #fbed1a;
 }
+
+#winner-text {
+  color: #fbed1a;
+}
+
+#alert-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert-button {
+  background-color: #2f3c66;
+  font-size: 3rem;
+  color: #ffe962;
+  border-radius: 1rem;
+  margin: 1rem auto;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.alert-button:hover,
+.alert-button:active {
+  color: #e74b35;
+  background-color: #fbed1a;
+}

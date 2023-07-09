@@ -33,8 +33,12 @@ const selectGameMode = new Promise((resolve) => {
   });
 });
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 // Cuenta regresiva inicial de la partida
-function initialTimer() {
+async function initialTimer() {
   // Coloca el temporizador inicial en pantalla
   let timer = 3;
   const timerDiv = document.createElement('DIV');
@@ -45,19 +49,15 @@ function initialTimer() {
   timerDiv.appendChild(timerNumber);
   document.body.appendChild(timerDiv);
 
-  // Ejecuta la cuenta regresiva y elimina la alerta
-  const initialTimerInterval = setInterval(() => {
+  while (timer >= 0) {
     timerNumber.textContent = `${timer}`;
+    await wait(900);
     timer--;
-    if (timer === -1) {
-      timerDiv.style.opacity = '0';
-      setTimeout(() => {
-        timerDiv.remove();
-        progressBar.style.animation = 'progress-animation 3s infinite';
-      }, 100);
-      clearInterval(initialTimerInterval);
-    }
-  }, 900);
+  }
+
+  timerDiv.style.opacity = '0';
+  await wait(100);
+  timerDiv.remove();
 }
 
 // Genera los numeros aleatorios
@@ -304,7 +304,6 @@ function winnerRowColumnCorners(boxes, index, gameMode) {
   for (let j = 1; j <= 4; j++) {
     boxesSet = Array.from(boxes.querySelectorAll(`.${gameMode}-${j}`));
     winner = boxesSet.every((box) => box.classList.contains('marked'));
-    console.log(winner);
     if (winner) {
       console.log(index);
       return index !== 0 ? index : 'Humano';
@@ -439,119 +438,39 @@ function showWinner(winner) {
     window.location.href = 'index.html';
   };
 
-  volverBtn.onclick = function () {
+  volverBtn.onclick = async function () {
     clearBoards();
     winnerAlert.remove();
-    initialTimer();
     startGame();
+    await initialTimer();
+    await play();
+    // initialTimer.then(() => play());
   };
 }
 
 // Bucle del juego
-function play() {
+async function play() {
   let mainDeckIndex = 0;
+  progressBar.style.animation = 'progress-animation 3s infinite';
 
-  const interval = setInterval(() => {
+  while (!gameOver && mainDeckIndex < 54) {
+    // console.log(!gameOver && mainDeckIndex < 54);
     imgCurrentCard.src = mainDeck[mainDeckIndex].img;
     imgCurrentCard.alt = mainDeck[mainDeckIndex].nombre;
 
     for (let i = 1; i < 5; i++) {
       setBeanPC(playerBoards[i], i);
     }
-
     mainDeckIndex++;
-
     gameOver = winner();
-    if (gameOver || mainDeckIndex >= 54) {
-      console.log(`El ganador es el jugador ${gameOver}`);
-      showWinner(gameOver);
-      progressBar.style.animation = 'none';
-      clearInterval(interval);
-    }
-  }, 1000);
+    await wait(3000);
+  }
+
+  console.log(`El ganador es el jugador ${gameOver}`);
+  showWinner(gameOver);
+  progressBar.style.animation = 'none';
+  // clearInterval(interval);
 }
-
-// function humanWins() {
-//   // let countersSets = 0;
-//   // console.log(countersSets);
-//   const countersSets = [];
-//   // console.log(countersSets, mainDeck);
-//   const filasIndexes = [
-//     [0, 1, 2, 3],
-//     [4, 5, 6, 7],
-//     [8, 9, 10, 11],
-//     [12, 13, 14, 15],
-//   ];
-//   const columnasIndexes = [
-//     [0, 4, 8, 12],
-//     [1, 5, 9, 13],
-//     [2, 6, 10, 14],
-//     [3, 7, 11, 15],
-//   ];
-//   const esquinasIndexes = [
-//     [0, 1, 4, 5],
-//     [2, 3, 6, 7],
-//     [8, 9, 12, 13],
-//     [10, 11, 14, 15],
-//   ];
-//   let containsCard;
-
-//   let win;
-
-//   let temp = [];
-//   for (let playerBoard of playerBoards) {
-//     for (let i = 0; i < 4; i++) {
-//       for (let box of esquinasIndexes[i]) {
-//         for (let j = 0; j < 54; j++) {
-//           // console.log(card);
-//           if (mainDeck[j].nombre === playerBoard[box].nombre) {
-//             temp.push(j);
-//           }
-//         }
-//       }
-//     }
-//     countersSets.push(temp);
-//     temp = [];
-//   }
-
-// console.log(countersSets);
-//   let reorganizedBoards = [];
-//   let reorganizedBoard = [];
-//   let rowBoard = [];
-//   console.log(reorganizedBoards, countersSets);
-
-//   for (let w = 0; w < 5; w++) {
-//     for (let k = 0; k < 4; k++) {
-//       for (let box of esquinasIndexes[k]) {
-//         rowBoard.push(countersSets[w][box]);
-//       }
-//       reorganizedBoard.push(rowBoard);
-//       rowBoard = [];
-//     }
-//     reorganizedBoards.push(reorganizedBoard);
-//     reorganizedBoard = [];
-//   }
-
-//   let maxNumbersBoardsRows = [];
-//   let maxNumbersBoardRow = [];
-//   for (let board of reorganizedBoards) {
-//     for (let x = 0; x < 4; x++) {
-//       maxNumbersBoardRow.push(Math.max(...board[x]));
-//     }
-//     maxNumbersBoardsRows.push(maxNumbersBoardRow);
-//     maxNumbersBoardRow = [];
-//   }
-//   console.log(maxNumbersBoardsRows);
-
-//   const minMaxNumbersBoards = [];
-//   for (let maxNumbersList of maxNumbersBoardsRows) {
-//     minMaxNumbersBoards.push(Math.min(...maxNumbersList));
-//   }
-//   console.log(minMaxNumbersBoards);
-
-//   win = minMaxNumbersBoards.indexOf(Math.min(...minMaxNumbersBoards));
-//   console.log(`El jugador ${win} ganara la partida`);
-// }
 
 // Inicia el juego
 function startGame() {
@@ -570,10 +489,13 @@ function startGame() {
     boardBox.addEventListener('click', setBeanHuman);
   });
 
-  play();
+  // initialTimer.then(() => play());
+  // play();
 }
 
 if (document.querySelector('#game-layout')) {
-  initialTimer();
   startGame();
+  // initialTimer.then(() => play());
+  await initialTimer();
+  await play();
 }
