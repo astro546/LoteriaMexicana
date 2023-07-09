@@ -268,6 +268,11 @@ function setBeanHuman(e) {
     bean.classList.add('bean');
     box.parentNode.classList.add('marked');
     box.insertAdjacentElement('afterend', bean);
+    gameOver = winner();
+    if (gameOver) {
+      console.log(`El ganador es el jugador ${gameOver}`);
+      showWinner(gameOver);
+    }
   } else if (!box.parentNode.classList.contains('marked')) {
     const alert = document.createElement('div');
     alert.classList.add('block-alert');
@@ -293,6 +298,11 @@ function setBeanPC(boardPC, playerID) {
     if (boardPC[i].nombre === currentCardImg.alt) {
       boardPCBoxes.item(i).style.backgroundColor = '#e64328';
       boardPCBoxes.item(i).classList.add('marked');
+      gameOver = winner();
+      if (gameOver) {
+        console.log(`El ganador es el jugador ${gameOver}`);
+        showWinner(gameOver);
+      }
     }
   }
 }
@@ -408,10 +418,15 @@ function clearBoards() {
       }
     }
   }
+  console.log('tableros limpios');
 }
 
 // Muestra al ganador en pantalla
 function showWinner(winner) {
+  progressBar.style.animation = 'none';
+  const boardHumanCardsImg = document.querySelectorAll('.img-box');
+  boardHumanCardsImg.forEach((imgBox) => (imgBox.style.cursor = 'default'));
+
   const winnerAlert = document.createElement('div');
   const winnerText = document.createElement('h3');
   const alertButtons = document.createElement('div');
@@ -439,37 +454,33 @@ function showWinner(winner) {
   };
 
   volverBtn.onclick = async function () {
+    gameOver = false;
     clearBoards();
     winnerAlert.remove();
     startGame();
     await initialTimer();
     await play();
-    // initialTimer.then(() => play());
   };
 }
 
 // Bucle del juego
 async function play() {
   let mainDeckIndex = 0;
-  progressBar.style.animation = 'progress-animation 3s infinite';
+  progressBar.style.animation = 'progress-animation 3000ms infinite';
+  const boardHumanCardsImg = document.querySelectorAll('.img-box');
+  boardHumanCardsImg.forEach((imgBox) => (imgBox.style.cursor = 'pointer'));
 
   while (!gameOver && mainDeckIndex < 54) {
-    // console.log(!gameOver && mainDeckIndex < 54);
     imgCurrentCard.src = mainDeck[mainDeckIndex].img;
     imgCurrentCard.alt = mainDeck[mainDeckIndex].nombre;
 
     for (let i = 1; i < 5; i++) {
       setBeanPC(playerBoards[i], i);
     }
+
     mainDeckIndex++;
-    gameOver = winner();
     await wait(3000);
   }
-
-  console.log(`El ganador es el jugador ${gameOver}`);
-  showWinner(gameOver);
-  progressBar.style.animation = 'none';
-  // clearInterval(interval);
 }
 
 // Inicia el juego
@@ -483,19 +494,14 @@ function startGame() {
   showMode(gameMode);
   shuffleCards();
   showCards();
-  // humanWins();
 
   boardBoxes.forEach((boardBox) => {
     boardBox.addEventListener('click', setBeanHuman);
   });
-
-  // initialTimer.then(() => play());
-  // play();
 }
 
 if (document.querySelector('#game-layout')) {
   startGame();
-  // initialTimer.then(() => play());
   await initialTimer();
   await play();
 }

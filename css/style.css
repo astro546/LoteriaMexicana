@@ -163,6 +163,7 @@ header {
   width: 17rem;
   height: 22rem;
   border-radius: 1rem;
+  cursor: default;
 }
 
 #current-card {
@@ -230,7 +231,6 @@ h2 {
 
 #alert-timer,
 #alert-winner,
-.bean,
 .block-alert {
   position: fixed;
   z-index: 7000;
@@ -257,6 +257,7 @@ h2 {
 .bean {
   width: 10rem;
   height: 10rem;
+  position: absolute;
 }
 
 .block-alert {
